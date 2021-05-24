@@ -7,7 +7,7 @@ public class InterfaceUsuario {
 	private HashMap<String, Comando> comandos;
 	
 	public InterfaceUsuario() {
-		InicializadorComandos.inicializarComandos();
+		this.comandos = InicializadorComandos.inicializarComandos();
 	}
 	
 	public HashMap<String, Comando> getComandos(){

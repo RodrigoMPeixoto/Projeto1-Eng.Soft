@@ -1,8 +1,11 @@
+import java.io.IOException;
 
 public class SistemaBiblioteca {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) throws IOException {
+		InterfaceUsuario interfaceUsuario = new InterfaceUsuario();
+		
+		interfaceUsuario.fazerLoopEntrada();
 
 	}
 

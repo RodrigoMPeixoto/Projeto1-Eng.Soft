@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 public class InicializadorComandos {
-	public static void inicializarComandos() {
+	public static HashMap<String, Comando> inicializarComandos() {
 		HashMap<String, Comando> comandos = new HashMap<String,Comando>();
 		
 		comandos.put("emp", new RealizarEmprestimo());
@@ -12,5 +12,7 @@ public class InicializadorComandos {
 		comandos.put("usu", new ConsultarUsuario());
 		comandos.put("ntf", new ConsultarNotificacoes());
 		comandos.put("sair", new Sair());
+		
+		return comandos;
 	}
 }
