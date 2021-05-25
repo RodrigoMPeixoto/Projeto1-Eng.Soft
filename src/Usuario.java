@@ -65,7 +65,7 @@ public abstract class Usuario {
 		return false;
 	}
 	
-	public boolean removerLivroEmprestimosCorrentes(String codigoLivro) {
+	public boolean devolverLivro(String codigoLivro) {
 		Iterator<Emprestimo> it = getEmprestimosCorrentes().iterator();
 		
 		while(it.hasNext()) {
