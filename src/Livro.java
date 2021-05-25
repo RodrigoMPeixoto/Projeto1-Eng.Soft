@@ -65,9 +65,9 @@ public class Livro {
 			return buscarExemplarDisponivel();
 		}
 		else {
-			if(qntExemplaresDisponiveis >= reservas.size()) {//Se tiver mais livros que reservas
+			if(qntExemplaresDisponiveis() >= reservas.size()) {//Se tiver mais livros que reservas
 				return buscarExemplarDisponivel();
-			}else if (buscaPosicao(codigoUsuario) <= qntExemplaresDisponiveis) {//Se a reserva dele for suficiente para pegar um livro
+			}else if (buscarPosicao(codigoUsuario) <= qntExemplaresDisponiveis()) {//Se a reserva dele for suficiente para pegar um livro
 				return buscarExemplarDisponivel();
 			}
 		}
@@ -75,12 +75,32 @@ public class Livro {
 		return null; //Nenhuma das etapas acima cumpridas retorna nulo indicando que não existe livro disponiel para o usuario
 	}
 	
-	public boolean pegarEmprestado() {
-		boolean disponivel = true;
-		
-		//Codar...
-		
-		return disponivel;
+	public void adicionarReserva(Livro livro, Usuario usuario, String dataReserva) {
+		getReservas().add(new Reserva(livro, usuario, dataReserva));
+		if(reservas.size() == 3) {
+			notificarObservador();
+			System.out.println("Notificando observadores");
+			return;
+		}
+	}
+	
+	//Remove uma reserva passando o codigo do usuario
+	public void removerReserva(String codigoUsuario) {
+		//Deletar a instancia reserva de dentro do array e da memoria? -----------------------
+		for(int i = 0; i<reservas.size(); i++) {
+			if(reservas.get(i).getUsuario().getCodigoUsuario()== codigoUsuario) {
+				reservas.remove(i);
+			}
+		}
+	}
+	
+	public void pegarEmprestado(Exemplar exemplar) {
+		//Define o exemplar como emprestado
+		for(int i = 0; i<exemplares.size(); i++) {
+			if(exemplares.get(i) == exemplar) {
+				exemplares.get(i).setDisponivel(false);
+			}
+		}
 	}
 	
 	public Exemplar obterExemplar() {
@@ -88,30 +108,97 @@ public class Livro {
 		
 		//Codar...
 		
-		return exemplar;
+		return null;
 	}
 	
-	public bool devolverLivro() {
+	public bool devolverLivro(String codigoUsuario) {
+		boolean realizado = false;
+		//Remover o livro de emprestimos
+		Emprestimo emprestimo; 
+		for(int i = 0; i<emprestimos.size(); i++) {
+			if(emprestimos.get(i).getUsuario().getCodigoUsuario() == codigoUsuario) {
+				emprestimo = emprestimos.get(i);
+				getEmprestimos().remove(i);
+				//Inserir uma mensagem aqui caso não encontre o emprestimo no array?
+				realizado = true;
+			}
+		}
 		
-		//Codar
+		if(realizado == true) { //Se o emprestimo existia e foi removido ele pode mudar o status
+			//Alterar status do livro pra disponivel
+			Exemplar exemplar = emprestimo.getExemplar();
+			for(int i = 0; i<exemplares.size(); i++) {
+				if(exemplares.get(i) == exemplar) {
+					exemplares.get(i).setDisponivel(true);
+				}
+			}
+			//Inserir uma mensagem aqui caso não encontre o livro em exemplares?
+		}
+		
+		return realizado;
+	}
+	 
+	public void registrarObservaodr(Usuario usuario) {
+		getObservadores().add(usuario); // verificar se essa situação age conforme o previsto
+		System.out.println("Observador registrado com sucesso");
+		return;
 	}
 	
-	public void registrarObservaodr() {
-		
-		//Codar...
-	}
-	
-	public void removerObservador() { // Verificar possibilidade de alterar o retorno para boolean
-		
-		//Codar
+	public void removerObservador(Usuario usuario) { // Verificar possibilidade de alterar o retorno para boolean
+		for(int i = 0; i<observadores.size(); i++) {
+			if(observadores.get(i) == usuario) {
+				getObservadores().remove(i);
+				System.out.println("Observador removido com sucesso");
+				return;
+			}
+		}
+		System.out.println("Esse observador não está registrado");
+		return;
 	}
 	
 	public void notificarObservador() {
-		//Codar..
+		if (observadores.size() == 0) {
+			System.out.println("Não existem observadores registrados");
+			return;
+		}
+		
+		for(int i=0; i<observadores.size(); i++) {
+			Observador observador = observadores.get(i);
+			observador.atualizar();
+		}
+		System.out.println("Observadores notificados com sucesso");
+		return;
 	}
 	
-	public void atualizarQntReservas(int qntReservas) {
-		//Codar
+	public String exibirReservas() {
+		String reserva = "";
+		for(int i=0; i<reservas.size(); i++) {
+			reserva += reservas.get(i).toString(); 
+		}
+		
+		return reserva;
+	}
+	
+	public String exibirExemplares() {
+		String exemplar = "";
+		for(int i=0; i<exemplares.size(); i++) {
+			exemplar += exemplares.get(i).toString(); 
+		}
+		
+		return exemplar;
+	}
+	
+	public String toString() {
+		String consulta = "";
+		
+		consulta += String.format("Título: %s \nQuantidade de reservas: %s \n", this.titulo, reservas.size());
+		
+		if(reservas.size() > 0) {
+			consulta += String.format("%s \n", exibirReservas());
+		}
+		consulta += String.format("%s \n", exibirExemplares());
+		
+		return consulta;
 	}
 	
 	//Getter e Setter

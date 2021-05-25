@@ -66,45 +66,74 @@ public class Biblioteca {
 				System.out.println("Não existem livros disponíves no momento");
 				return;
 			}else {
-				boolean pegarLivro = livro.pegarEmprestado(codigoUsuario);
-				if(pegarLivro == false) {
-					System.out.println("Operação não realizada"); // Melhorar isso
-					return;
-				}else {
-					System.out.println("Operação Realizada com sucesso"); // Melhorar isso
-				}
+				//Utilizar a biblioteca de tempo aqui
+				//String dataEmprestimo =  
+				Emprestimo emprestimo = new Emprestimo(usuario, exemplar, dataEmprestimo);
+				livro.getEmprestimos().add(emprestimo);
+				usuario.getEmprestimosCorrentes().add(emprestimo);
+				boolean pegouLivro = livro.pegarEmprestado(codigoUsuario, exemplar);
+				livro.removerReserva(codigoUsuario); // Verificar possibilidade de remover a reserva dentro do metodo pegar emprestado
+				usuario.removerReserva(codigoLivro); //Possibilidade de melhorar essa remoção de reserva
 			}
 		}
 		
-		//Pegou emprestado usando a reserva removemos a reserva e efetivamos o emprestimo
 		
 		//Deve ser retornada uma mensagem de sucesso ou insucesso
-		return mensagem;
+		System.out.pintln("Emprestimo realizado com sucesso");
 		
 	}
 	
-	public void devolverLivro() {
-		
+	public void devolverLivro(String codigoUsuario, String codigoLivro) {
+		Livro livro = buscarLivro(codigoLivro);
+		Usuario usuario = buscarUsuario(codigoUsuario);
+		livro.devolverLivro(codigoUsuario);
+		usuario.devolverLivro(codigoUsuario, codigoLivro);
+		//Verificar possibilidade de deletar a classe emprestimo referente ao livro
 	}
 	
-	public void reservarLivro() {
-		
+	public void reservarLivro(String codigoUsuario, String codigoLivro) {
+		Livro livro = buscarLivro(codigoLivro);
+		Usuario usuario = buscarUsuario(codigoUsuario);
+		if(usuario.verificarRestricoesReserva(codigoLivro)) {
+			//Utilizar a biblioteca de tempo aqui
+			//String dataEmprestimo =
+			livro.adicionarReserva(livro,usuario,sataReserva);
+			System.out.println("Reserva realizada com sucesso");
+			return; 
+		}
+		System.out.println("Não foi possível realizar a reserva para esse usuário");
+		return;
 	}
 	
-	public void observarLivro() {
-		
+	public void observarLivro(String codigoUsuario, String codigoLivro) {
+		Livro livro = buscarLivro(codigoLivro);
+		Usuario usuario = buscarUsuario(codigoUsuario);
+		livro.registrarObservador(usuario);
 	}
 	
-	public void consultarLivro() {
-		
+	public void pararDeObservarLivro(String codigoUsuario, String codigoLivro) {
+		Livro livro = buscarLivro(codigoLivro);
+		Usuario usuario = buscarUsuario(codigoUsuario);
+		livro.removerObservador(usuario);
+		return;
 	}
 	
-	public void consultarUsuario() {
-		
+	public void consultarLivro(String codigoLivro) {
+		Livro livro = buscarLivro(codigoLivro);
+		livro.toString();
+		return;
 	}
 	
-	public void consultarQntNotificacoes() {
-		
+	public void consultarUsuario(String codigoUsuario) {
+		Usuario usuario = buscarUsuario(codigoUsuario);
+		usuario.toString();
+		return;
+	}
+	
+	public void consultarQntNotificacoes(String codigoUsuario) {
+		Usuario usuario = buscarUsuario(codigoUsuario);
+		System.out.println("O usuario recebeu %i.", usuario.getQtdNotificacoes());
+		return.
 	}
 	
 	//Getters e Setters
