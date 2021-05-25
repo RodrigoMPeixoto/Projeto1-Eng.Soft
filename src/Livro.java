@@ -75,8 +75,8 @@ public class Livro {
 		return null; //Nenhuma das etapas acima cumpridas retorna nulo indicando que não existe livro disponiel para o usuario
 	}
 	
-	public void adicionarReserva(Livro livro, Usuario usuario, String dataReserva) {
-		getReservas().add(new Reserva(livro, usuario, dataReserva));
+	public void adicionarReserva(Livro livro, Usuario usuario) {
+		getReservas().add(new Reserva(livro, usuario));
 		if(reservas.size() == 3) {
 			notificarObservador();
 			System.out.println("Notificando observadores");
@@ -117,7 +117,6 @@ public class Livro {
 		Emprestimo emprestimo; 
 		for(int i = 0; i<emprestimos.size(); i++) {
 			if(emprestimos.get(i).getUsuario().getCodigoUsuario() == codigoUsuario) {
-				emprestimo = emprestimos.get(i);
 				getEmprestimos().remove(i);
 				//Inserir uma mensagem aqui caso não encontre o emprestimo no array?
 				realizado = true;
@@ -138,7 +137,7 @@ public class Livro {
 		return realizado;
 	}
 	 
-	public void registrarObservaodr(Usuario usuario) {
+	public void registrarObservador(Usuario usuario) {
 		getObservadores().add(usuario); // verificar se essa situação age conforme o previsto
 		System.out.println("Observador registrado com sucesso");
 		return;
@@ -173,7 +172,8 @@ public class Livro {
 	public String exibirReservas() {
 		String reserva = "";
 		for(int i=0; i<reservas.size(); i++) {
-			reserva += reservas.get(i).toString(); 
+			reserva += reservas.get(i).getUsuario().getNomeUsuario();
+      reserva += "\n"; 
 		}
 		
 		return reserva;
@@ -194,9 +194,9 @@ public class Livro {
 		consulta += String.format("Título: %s \nQuantidade de reservas: %s \n", this.titulo, reservas.size());
 		
 		if(reservas.size() > 0) {
-			consulta += String.format("%s \n", exibirReservas());
+			consulta += String.format("%s\n", exibirReservas());
 		}
-		consulta += String.format("%s \n", exibirExemplares());
+		consulta += String.format("%s\n", exibirExemplares());
 		
 		return consulta;
 	}

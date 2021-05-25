@@ -17,7 +17,7 @@ public class Exemplar {
 		String consulta = "";
 		
 		consulta += String.format("Codigo do exemplar: %s \nStatus do exemplar: %b \n", getCodigoExemplar(), isDisponivel());
-		
+    
 		// Inserir forma de consulta usuario, data de emprestimo e deovlção para retornar aqui
 		return consulta;
 	}

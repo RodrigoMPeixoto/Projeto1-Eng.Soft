@@ -51,8 +51,8 @@ public class Biblioteca {
 			System.out.println("Usuario não encontrado");
 			return;
 		}else {
-			boolean usuarioPendente = usuario.verificarRestricoesEmprestimos(codigoLivro);
-			prioridade = usuario.verificarPioridade();
+			boolean usuarioPendente = usuario.verificarRestricoesEmprestimo(codigoLivro);
+			prioridade = usuario.verificarPrioridade();
 		}	
 		
 		//Verificar o livro
@@ -66,9 +66,7 @@ public class Biblioteca {
 				System.out.println("Não existem livros disponíves no momento");
 				return;
 			}else {
-				//Utilizar a biblioteca de tempo aqui
-				//String dataEmprestimo =  
-				Emprestimo emprestimo = new Emprestimo(usuario, exemplar, dataEmprestimo);
+				Emprestimo emprestimo = new Emprestimo(usuario, exemplar);
 				livro.getEmprestimos().add(emprestimo);
 				usuario.getEmprestimosCorrentes().add(emprestimo);
 				boolean pegouLivro = livro.pegarEmprestado(codigoUsuario, exemplar);
@@ -79,7 +77,7 @@ public class Biblioteca {
 		
 		
 		//Deve ser retornada uma mensagem de sucesso ou insucesso
-		System.out.pintln("Emprestimo realizado com sucesso");
+		System.out.println("Emprestimo realizado com sucesso");
 		
 	}
 	
@@ -87,7 +85,7 @@ public class Biblioteca {
 		Livro livro = buscarLivro(codigoLivro);
 		Usuario usuario = buscarUsuario(codigoUsuario);
 		livro.devolverLivro(codigoUsuario);
-		usuario.devolverLivro(codigoUsuario, codigoLivro);
+		usuario.devolverLivro(codigoLivro);
 		//Verificar possibilidade de deletar a classe emprestimo referente ao livro
 	}
 	
@@ -97,7 +95,7 @@ public class Biblioteca {
 		if(usuario.verificarRestricoesReserva(codigoLivro)) {
 			//Utilizar a biblioteca de tempo aqui
 			//String dataEmprestimo =
-			livro.adicionarReserva(livro,usuario,sataReserva);
+			livro.adicionarReserva(livro,usuario);
 			System.out.println("Reserva realizada com sucesso");
 			return; 
 		}
@@ -120,19 +118,20 @@ public class Biblioteca {
 	
 	public void consultarLivro(String codigoLivro) {
 		Livro livro = buscarLivro(codigoLivro);
-		livro.toString();
+		String infoLivro = livro.toString();
+    
 		return;
 	}
 	
 	public void consultarUsuario(String codigoUsuario) {
 		Usuario usuario = buscarUsuario(codigoUsuario);
-		usuario.toString();
+		System.out.println(usuario.toString());
 		return;
 	}
 	
 	public void consultarQntNotificacoes(String codigoUsuario) {
 		Usuario usuario = buscarUsuario(codigoUsuario);
-		System.out.println("O usuario recebeu %i.", usuario.getQtdNotificacoes());
+		System.out.println("O usuario recebeu %d.", usuario.getQtdNotificacoes());
 		return.
 	}
 	
