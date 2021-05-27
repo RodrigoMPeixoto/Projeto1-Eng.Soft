@@ -58,5 +58,4 @@ public class Exemplar {
 	public void setDisponivel(boolean disponivel) {
 		this.disponivel = disponivel;
 	}
-
 }
