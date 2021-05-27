@@ -6,7 +6,7 @@ public class RealizarEmprestimo implements Comando {
 		String[] stringsComandoSplited = stringComando.split(" ");
 		String codigoUsuario = stringsComandoSplited[1];
 		String codigoLivro = stringsComandoSplited[2];
-		// Biblioteca.obterInstancia().realizarEmprestimo(codigoUsuario, codigoLivro);
+		Biblioteca.obterInstancia().pegarEmprestado(codigoUsuario, codigoLivro);
 	}
 
 }

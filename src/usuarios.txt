@@ -1,0 +1,9 @@
+Codigo;Tipo Usuario;Nome
+123;Aluno de Graduacao;Joao da Silva
+456;Aluno de Pos-graduacao;Luiz Fernando Rodrigues
+789;Aluno de Graduacao;Pedro Paulo
+100;Professor;Carlos Lucena
+
+
+
+

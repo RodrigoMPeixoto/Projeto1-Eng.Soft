@@ -5,7 +5,7 @@ public class ConsultarNotificacoes implements Comando {
 	public void executar(String stringComando) {
 		String[] stringsComandoSplited = stringComando.split(" ");
 		String codigoUsuario = stringsComandoSplited[1];
-		// Biblioteca.obterInstancia().consultarQtdNotificacoes(codigoUsuario);
+		Biblioteca.obterInstancia().consultarQntNotificacoes(codigoUsuario);
 	}
 
 }

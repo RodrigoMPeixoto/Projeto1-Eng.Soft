@@ -6,7 +6,7 @@ public class ObservarLivro implements Comando {
 		String[] stringsComandoSplited = stringComando.split(" ");
 		String codigoUsuario = stringsComandoSplited[1];
 		String codigoLivro = stringsComandoSplited[2];
-		// Biblioteca.obterInstancia().observarLivro(codigoUsuario, codigoLivro);
+		Biblioteca.obterInstancia().observarLivro(codigoUsuario, codigoLivro);
 
 	}
 

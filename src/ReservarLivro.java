@@ -6,7 +6,7 @@ public class ReservarLivro implements Comando {
 		String[] stringsComandoSplited = stringComando.split(" ");
 		String codigoUsuario = stringsComandoSplited[1];
 		String codigoLivro = stringsComandoSplited[2];
-		// Biblioteca.obterInstancia().reservarLivro(codigoUsuario, codigoLivro);
+		Biblioteca.obterInstancia().reservarLivro(codigoUsuario, codigoLivro);
 	}
 
 }
