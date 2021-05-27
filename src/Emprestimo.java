@@ -50,8 +50,6 @@ public class Emprestimo {
 	}
 	
 	public String toString() {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		
 		String emprestimoCorrente = String.format(""
 				+ "Titulo: %s\n"
 				+ "Data do Emprestimo: %s\n"

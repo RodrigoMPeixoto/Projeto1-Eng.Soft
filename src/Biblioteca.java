@@ -24,7 +24,8 @@ public class Biblioteca {
 	//Metodos da classe
 	public Usuario buscarUsuario(String codigoUsuario) {
 		for(int i = 0; i<usuarios.size(); i++) {
-			if(usuarios.get(i).getCodigoUsuario() == codigoUsuario) {
+			if(usuarios.get(i).getCodigoUsuario().equals(codigoUsuario)) {
+				System.out.println(usuarios.get(i).getCodigoUsuario());
 				return usuarios.get(i);
 			}
 		}
@@ -53,23 +54,27 @@ public class Biblioteca {
 		}else {
 			boolean usuarioPendente = usuario.verificarRestricoesEmprestimo(codigoLivro);
 			prioridade = usuario.verificarPrioridade();
+			if(usuarioPendente == true) {
+				System.out.println("Usuario possui pendências");
+				return;
+			}
 		}	
 		
 		//Verificar o livro
 		Livro livro = buscarLivro(codigoLivro);
 		if(livro == null) { // Verifica se o livro existe
-			System.out.println("Livro nÃ£o encontrado");
+			System.out.println("Livro não encontrado");
 			return;
 		}else {
 			Exemplar exemplar = livro.verificarDisponibilidade(codigoUsuario, prioridade);
 			if(exemplar == null) {
-				System.out.println("NÃ£o existem livros disponÃ­ves no momento");
+				System.out.println("Não existem livros disponíves no momento");
 				return;
 			}else {
 				Emprestimo emprestimo = new Emprestimo(usuario, exemplar);
 				livro.getEmprestimos().add(emprestimo);
 				usuario.getEmprestimosCorrentes().add(emprestimo);
-				boolean pegouLivro = livro.pegarEmprestado(codigoUsuario, exemplar);
+				livro.pegarEmprestado(exemplar, emprestimo);
 				livro.removerReserva(codigoUsuario); // Verificar possibilidade de remover a reserva dentro do metodo pegar emprestado
 				usuario.removerReserva(codigoLivro); //Possibilidade de melhorar essa remoÃ§Ã£o de reserva
 			}
@@ -119,7 +124,7 @@ public class Biblioteca {
 	public void consultarLivro(String codigoLivro) {
 		Livro livro = buscarLivro(codigoLivro);
 		String infoLivro = livro.toString();
-    
+		System.out.printf("Resultado da Consulta:\n%s", infoLivro);
 		return;
 	}
 	
@@ -131,8 +136,8 @@ public class Biblioteca {
 	
 	public void consultarQntNotificacoes(String codigoUsuario) {
 		Usuario usuario = buscarUsuario(codigoUsuario);
-		System.out.println("O usuario recebeu %d.", usuario.getQtdNotificacoes());
-		return.
+		System.out.printf("O usuario recebeu %d.", usuario.getQtdNotificacoes());
+		return;
 	}
 	
 	//Getters e Setters

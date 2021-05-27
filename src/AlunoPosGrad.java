@@ -26,7 +26,7 @@ public class AlunoPosGrad extends Usuario {
 	private boolean usuarioPossuiExemplar(String codigoLivro) {
 		for(int i=0; i<getEmprestimosCorrentes().size(); i++) {
 			Emprestimo e = getEmprestimosCorrentes().get(i);
-			if(e.getExemplar().getLivro().getCodigo().equals(codigoLivro)) {
+			if(e.getExemplar().getLivro().getCodigoLivro().equals(codigoLivro)) {
 				return true;
 			}
 		}
@@ -64,5 +64,10 @@ public class AlunoPosGrad extends Usuario {
 	@Override
 	public int getQtdNotificacoes() {
 		return 0;
+	}
+
+	@Override
+	public void atualizar() {
+		return;
 	}
 }

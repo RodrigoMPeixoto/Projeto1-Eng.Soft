@@ -2,6 +2,7 @@ public class Exemplar {
 	private Livro livro;
 	private String codigoExemplar; // Verificar possibilidade de definir esse codigo como variavel estatica em livro ou forma de contar.
 	private boolean disponivel;
+	private Emprestimo emprestimo; //Codar..
 	
 	
 	//Construtor
@@ -9,6 +10,7 @@ public class Exemplar {
 		this.livro = livro;
 		this.codigoExemplar = codigoExemplar;
 		this.disponivel = disponivel;
+		this.setEmprestimo(null);
 	}
 	
 	//Metodos da Classe
@@ -17,11 +19,13 @@ public class Exemplar {
 		String consulta = "";
 		
 		consulta += String.format("Codigo do exemplar: %s \nStatus do exemplar: %b \n", getCodigoExemplar(), isDisponivel());
-    
-		// Inserir forma de consulta usuario, data de emprestimo e deovlÃ§Ã£o para retornar aqui
+		if(isDisponivel() == false) {
+			consulta += String.format("Usuario: %s \nData do Emprestimo: %s \n Data de devolução: %s \n ", getEmprestimo().getDono().getNomeUsuario(), getEmprestimo().getDataEmprestimo(), getEmprestimo().getDataDevolucaoPrevistaEmString());
+		}
 		return consulta;
 	}
 	
+	/*
 	public boolean pegarEmprestado(Usuario usuario) {
 		//Codar...
 	}
@@ -33,6 +37,7 @@ public class Exemplar {
 	public boolean devolverLivro() {
 		//Codar...
 	}
+	*/
 	
 	//Getter e Setters
 	public Livro getLivro() {
@@ -57,5 +62,13 @@ public class Exemplar {
 	
 	public void setDisponivel(boolean disponivel) {
 		this.disponivel = disponivel;
+	}
+
+	public Emprestimo getEmprestimo() {
+		return emprestimo;
+	}
+
+	public void setEmprestimo(Emprestimo emprestimo) {
+		this.emprestimo = emprestimo;
 	}
 }

@@ -9,6 +9,7 @@ public class Livro {
 	private ArrayList<Observador> observadores;
 	private ArrayList<Reserva> reservas;
 	private ArrayList<Emprestimo> emprestimos;
+	public static int numExemplares = 0; 
 	
 	//Construtor
 	public Livro(String codigoLivro, String titulo, String editora, String autores, String anoPublicacao) {
@@ -18,13 +19,18 @@ public class Livro {
 		this.autores = autores;
 		this.anoPublicacao = anoPublicacao;
 		
-		setExemplares(new ArrayList<Exemplar>());
+		setExemplares(new ArrayList<Exemplar>()); //Adicionar aqui o primeiro exemplar
 		setObservadores(new ArrayList<Observador>());
 		setReservas(new ArrayList<Reserva>());
 		setEmprestimos(new ArrayList<Emprestimo>());
 		
-		//Chamar o primeiro exemplar do livro ao ser instanciado
-		Exemplar();
+		getExemplares().add(new Exemplar(this, definirCodigoExemplar(), true));
+	}
+	
+	public String definirCodigoExemplar(){
+		Livro.numExemplares ++;
+		
+		return String.valueOf(numExemplares);
 	}
 	
 	//Metodos da Classe
@@ -57,6 +63,7 @@ public class Livro {
 				return i+1;
 			}
 		}
+		return -1;
 	}
 	
 	//Verifica se existe livro que o usuario possa pegar e retorna ele.
@@ -67,8 +74,11 @@ public class Livro {
 		else {
 			if(qntExemplaresDisponiveis() >= reservas.size()) {//Se tiver mais livros que reservas
 				return buscarExemplarDisponivel();
-			}else if (buscarPosicao(codigoUsuario) <= qntExemplaresDisponiveis()) {//Se a reserva dele for suficiente para pegar um livro
-				return buscarExemplarDisponivel();
+			}else {
+				int posicaoUsuario = buscarPosicao(codigoUsuario);
+				if ( posicaoUsuario >= 0 && posicaoUsuario <= qntExemplaresDisponiveis()) {//Se a reserva dele for suficiente para pegar um livro
+					return buscarExemplarDisponivel();
+				}
 			}
 		}
 		
@@ -94,15 +104,19 @@ public class Livro {
 		}
 	}
 	
-	public void pegarEmprestado(Exemplar exemplar) {
+	public void pegarEmprestado(Exemplar exemplar, Emprestimo emprestimo) {
 		//Define o exemplar como emprestado
 		for(int i = 0; i<exemplares.size(); i++) {
 			if(exemplares.get(i) == exemplar) {
 				exemplares.get(i).setDisponivel(false);
+				exemplares.get(i).setEmprestimo(emprestimo);
 			}
 		}
+		
+		return;
 	}
 	
+	/*
 	public Exemplar obterExemplar() {
 		Exemplar exemplar;
 		
@@ -110,28 +124,24 @@ public class Livro {
 		
 		return null;
 	}
+	*/
 	
-	public bool devolverLivro(String codigoUsuario) {
+	public boolean devolverLivro(String codigoUsuario) {
 		boolean realizado = false;
+		
 		//Remover o livro de emprestimos
-		Emprestimo emprestimo; 
 		for(int i = 0; i<emprestimos.size(); i++) {
-			if(emprestimos.get(i).getUsuario().getCodigoUsuario() == codigoUsuario) {
+			if(emprestimos.get(i).getDono().getCodigoUsuario() == codigoUsuario) {
+				Exemplar exemplar = emprestimos.get(i).getExemplar();
+				for(int j = 0; j<exemplares.size(); j++) {
+					if(exemplares.get(j) == exemplar) {
+						exemplares.get(j).setDisponivel(true);
+					}
+				}
 				getEmprestimos().remove(i);
 				//Inserir uma mensagem aqui caso não encontre o emprestimo no array?
 				realizado = true;
 			}
-		}
-		
-		if(realizado == true) { //Se o emprestimo existia e foi removido ele pode mudar o status
-			//Alterar status do livro pra disponivel
-			Exemplar exemplar = emprestimo.getExemplar();
-			for(int i = 0; i<exemplares.size(); i++) {
-				if(exemplares.get(i) == exemplar) {
-					exemplares.get(i).setDisponivel(true);
-				}
-			}
-			//Inserir uma mensagem aqui caso não encontre o livro em exemplares?
 		}
 		
 		return realizado;
@@ -157,13 +167,12 @@ public class Livro {
 	
 	public void notificarObservador() {
 		if (observadores.size() == 0) {
-			System.out.println("Não existem observadores registrados");
+			System.out.println("N�o existem observadores registrados");
 			return;
 		}
 		
 		for(int i=0; i<observadores.size(); i++) {
-			Observador observador = observadores.get(i);
-			observador.atualizar();
+			observadores.get(i).atualizar();
 		}
 		System.out.println("Observadores notificados com sucesso");
 		return;

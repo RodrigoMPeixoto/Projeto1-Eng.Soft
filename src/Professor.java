@@ -1,7 +1,7 @@
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
-public class Professor extends Usuario implements Observador {
+public class Professor extends Usuario{
 
 	private int qtdNotificacoes;
 

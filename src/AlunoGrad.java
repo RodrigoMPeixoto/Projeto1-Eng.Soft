@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.time.temporal.ChronoUnit;
 
@@ -65,6 +64,11 @@ public class AlunoGrad extends Usuario {
 	@Override
 	public int getQtdNotificacoes() {
 		return 0;
+	}
+
+	@Override
+	public void atualizar() {
+		return;
 	}
 
 }

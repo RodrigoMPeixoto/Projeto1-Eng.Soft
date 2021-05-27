@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public abstract class Usuario {
+public abstract class Usuario implements Observador{
 	private String codigoUsuario;
 	private String nomeUsuario;
 	private ArrayList<Emprestimo> emprestimosCorrentes;
