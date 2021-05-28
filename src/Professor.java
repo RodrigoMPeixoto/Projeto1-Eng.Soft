@@ -1,6 +1,3 @@
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-
 public class Professor extends Usuario{
 
 	private int qntNotificacoes;
@@ -25,7 +22,7 @@ public class Professor extends Usuario{
 		}
 		
 		if(usuarioDevedor) {
-			System.out.println("O está devedor de um livro");
+			System.out.println("O estï¿½ devedor de um livro");
 		}
 		
 		if(usuarioPossuiExemplar) {

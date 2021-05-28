@@ -54,6 +54,7 @@ public abstract class Usuario implements Observador{
 		for(int i=0; i<getEmprestimosCorrentes().size(); i++) {
 			Emprestimo e = getEmprestimosCorrentes().get(i);
 			long diasEntreHojeEmprestimo = ChronoUnit.DAYS.between(Calendar.getInstance().toInstant(),e.getDataEmprestimo().toInstant());
+			System.out.println("dias entre hoje Emprestimo -> "+diasEntreHojeEmprestimo);
 			if(diasEntreHojeEmprestimo > numeroDiasEmprestimo()) {
 				return true;
 			}

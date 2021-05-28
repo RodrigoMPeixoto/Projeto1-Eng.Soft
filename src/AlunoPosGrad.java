@@ -1,6 +1,3 @@
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-
 public class AlunoPosGrad extends Usuario {
 	
 	public AlunoPosGrad(String codigoUsuario, String nomeUsuario) {
@@ -22,7 +19,7 @@ public class AlunoPosGrad extends Usuario {
 		}
 		
 		if(usuarioDevedor) {
-			System.out.println("O está devedor de um livro");
+			System.out.println("O estï¿½ devedor de um livro");
 		}
 		
 		if(limiteEmprestimosUsuarioAlcancado) {
