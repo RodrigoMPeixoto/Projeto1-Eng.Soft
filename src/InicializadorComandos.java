@@ -11,7 +11,6 @@ public class InicializadorComandos {
 		comandos.put("liv", new ConsultarLivro());
 		comandos.put("usu", new ConsultarUsuario());
 		comandos.put("ntf", new ConsultarNotificacoes());
-		comandos.put("sair", new Sair());
 		
 		return comandos;
 	}

@@ -2,9 +2,7 @@ import java.util.ArrayList;
 
 public class Livro {
 
-	private String codigoLivro;
-	private String titulo, editora, autores; 
-	private String anoPublicacao;
+	private String codigoLivro, titulo, editora, autores, edicao, anoPublicacao; 
 	private ArrayList<Exemplar> exemplares;
 	private ArrayList<Observador> observadores;
 	private ArrayList<Reserva> reservas;
@@ -12,28 +10,28 @@ public class Livro {
 	public static int numExemplares = 0; 
 	
 	//Construtor
-	public Livro(String codigoLivro, String titulo, String editora, String autores, String anoPublicacao) {
+	public Livro(String codigoLivro, String titulo, String editora, String autores, String edicao, String anoPublicacao) {
 		this.codigoLivro = codigoLivro;
 		this.titulo = titulo;
 		this.editora = editora;
 		this.autores = autores;
+		this.setEdicao(edicao);
 		this.anoPublicacao = anoPublicacao;
 		
-		setExemplares(new ArrayList<Exemplar>()); //Adicionar aqui o primeiro exemplar
+		setExemplares(new ArrayList<Exemplar>());
 		setObservadores(new ArrayList<Observador>());
 		setReservas(new ArrayList<Reserva>());
 		setEmprestimos(new ArrayList<Emprestimo>());
-		
-		getExemplares().add(new Exemplar(this, definirCodigoExemplar(), true));
 	}
 	
-	public String definirCodigoExemplar(){
+	//Metodos da Classe
+	
+	//Determina o codigo do novo exemplar
+	public static String definirCodigoExemplar(){
 		Livro.numExemplares ++;
 		
 		return String.valueOf(numExemplares);
 	}
-	
-	//Metodos da Classe
 	
 	//Retorna o primeiro exemplar disponivel do livro
 	public Exemplar buscarExemplarDisponivel() {
@@ -56,10 +54,10 @@ public class Livro {
 		return cont;
 	}
 	
-	//Busca a reserva de um usuario passando seu codigo e retornando sua posição na lista
+	//Busca a reserva de um usuario passando seu codigo e retornando sua posicao na lista
 	public int buscarPosicao(String codigoUsuario) {
 		for(int i = 0; i<reservas.size(); i++) {
-			if(reservas.get(i).getUsuario().getCodigoUsuario()== codigoUsuario) {
+			if(reservas.get(i).getUsuario().getCodigoUsuario().equals(codigoUsuario)) {
 				return i+1;
 			}
 		}
@@ -68,7 +66,7 @@ public class Livro {
 	
 	//Verifica se existe livro que o usuario possa pegar e retorna ele.
 	public Exemplar verificarDisponibilidade(String codigoUsuario, boolean prioridade) { 	
-		if(prioridade == true) {//Para prioridade não importa as reservas
+		if(prioridade == true) {//Para prioridade nao importa as reservas
 			return buscarExemplarDisponivel();
 		}
 		else {
@@ -82,23 +80,22 @@ public class Livro {
 			}
 		}
 		
-		return null; //Nenhuma das etapas acima cumpridas retorna nulo indicando que não existe livro disponiel para o usuario
+		return null; //Nenhuma das etapas acima cumpridas retorna nulo indicando que nao existe livro disponivel para o usuario
 	}
 	
-	public void adicionarReserva(Livro livro, Usuario usuario) {
-		getReservas().add(new Reserva(livro, usuario));
+	public void adicionarReserva(Reserva reserva) {
+		getReservas().add(reserva);
 		if(reservas.size() == 3) {
-			notificarObservador();
 			System.out.println("Notificando observadores");
+			notificarObservadores();
 			return;
 		}
 	}
 	
 	//Remove uma reserva passando o codigo do usuario
 	public void removerReserva(String codigoUsuario) {
-		//Deletar a instancia reserva de dentro do array e da memoria? -----------------------
 		for(int i = 0; i<reservas.size(); i++) {
-			if(reservas.get(i).getUsuario().getCodigoUsuario()== codigoUsuario) {
+			if(reservas.get(i).getUsuario().getCodigoUsuario().equals(codigoUsuario)) {
 				reservas.remove(i);
 			}
 		}
@@ -116,16 +113,6 @@ public class Livro {
 		return;
 	}
 	
-	/*
-	public Exemplar obterExemplar() {
-		Exemplar exemplar;
-		
-		//Codar...
-		
-		return null;
-	}
-	*/
-	
 	public boolean devolverLivro(String codigoUsuario) {
 		boolean realizado = false;
 		
@@ -140,16 +127,20 @@ public class Livro {
 					}
 				}
 				getEmprestimos().remove(i);
-				//Inserir uma mensagem aqui caso não encontre o emprestimo no array?
+				//Inserir uma mensagem aqui caso nao encontre o emprestimo no array?
 				realizado = true;
 			}
+		}
+		
+		if(realizado == false) {
+			System.out.println("O usuario nao possui este livro emprestado para devolve-lo");
 		}
 		
 		return realizado;
 	}
 	 
 	public void registrarObservador(Usuario usuario) {
-		getObservadores().add(usuario); // verificar se essa situação age conforme o previsto
+		getObservadores().add(usuario); // verificar se essa situacao age conforme o previsto
 		System.out.println("Observador registrado com sucesso");
 		return;
 	}
@@ -162,13 +153,13 @@ public class Livro {
 				return;
 			}
 		}
-		System.out.println("Esse observador não está registrado");
+		System.out.println("Esse observador nao esta registrado");
 		return;
 	}
 	
-	public void notificarObservador() {
+	public void notificarObservadores() {
 		if (observadores.size() == 0) {
-			System.out.println("N�o existem observadores registrados");
+			System.out.println("Nao existem observadores registrados");
 			return;
 		}
 		
@@ -182,8 +173,7 @@ public class Livro {
 	public String exibirReservas() {
 		String reserva = "";
 		for(int i=0; i<reservas.size(); i++) {
-			reserva += reservas.get(i).getUsuario().getNomeUsuario();
-      reserva += "\n"; 
+			reserva += String.format("Nome: %s\n", reservas.get(i).getUsuario().getNomeUsuario());
 		}
 		
 		return reserva;
@@ -192,7 +182,8 @@ public class Livro {
 	public String exibirExemplares() {
 		String exemplar = "";
 		for(int i=0; i<exemplares.size(); i++) {
-			exemplar += exemplares.get(i).toString(); 
+			exemplar += exemplares.get(i).toString();
+			exemplar += "\n";
 		}
 		
 		return exemplar;
@@ -201,7 +192,7 @@ public class Livro {
 	public String toString() {
 		String consulta = "";
 		
-		consulta += String.format("Título: %s \nQuantidade de reservas: %s \n", this.titulo, reservas.size());
+		consulta += String.format("Titulo: %s \nQuantidade de reservas: %s \n", this.titulo, reservas.size());
 		
 		if(reservas.size() > 0) {
 			consulta += String.format("%s\n", exibirReservas());
@@ -282,5 +273,13 @@ public class Livro {
 
 	public void setEmprestimos(ArrayList<Emprestimo> emprestimos) {
 		this.emprestimos = emprestimos;
+	}
+
+	public String getEdicao() {
+		return edicao;
+	}
+
+	public void setEdicao(String edicao) {
+		this.edicao = edicao;
 	}
 }

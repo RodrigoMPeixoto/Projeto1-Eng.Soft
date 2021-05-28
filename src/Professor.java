@@ -3,7 +3,7 @@ import java.util.Calendar;
 
 public class Professor extends Usuario{
 
-	private int qtdNotificacoes;
+	private int qntNotificacoes;
 
 	public Professor(String codigoUsuario, String nomeUsuario) {
 		super(codigoUsuario, nomeUsuario);
@@ -11,28 +11,27 @@ public class Professor extends Usuario{
 	
 	@Override
 	public void atualizar() {
-		this.qtdNotificacoes++;		
+		this.qntNotificacoes++;		
 	}
 
 	@Override
 	public boolean verificarRestricoesEmprestimo(String codigoLivro) {
 		boolean usuarioDevedor = isUsuarioDevedor();
+		boolean usuarioPossuiExemplar = usuarioPossuiExemplar(codigoLivro);
 		
-		if(!usuarioDevedor) {
-			System.out.println("O usuário está apto para realizar um empréstimo");
+		if(!usuarioDevedor && !usuarioPossuiExemplar) {
+			System.out.println("O usuario esta apto para realizar um emprestimo");
 			return true;
 		}
-		return false;
-	}
-
-	private boolean isUsuarioDevedor() {
-		for(int i=0; i<getEmprestimosCorrentes().size(); i++) {
-			Emprestimo e = getEmprestimosCorrentes().get(i);
-			long diasEntreHojeEmprestimo = ChronoUnit.DAYS.between(Calendar.getInstance().toInstant(),e.getDataEmprestimo().toInstant());
-			if(diasEntreHojeEmprestimo > 7) {
-				return true;
-			}
+		
+		if(usuarioDevedor) {
+			System.out.println("O est� devedor de um livro");
 		}
+		
+		if(usuarioPossuiExemplar) {
+			System.out.println("O usuario ja posui um exemplar deste livro");
+		}
+		
 		return false;
 	}
 
@@ -47,8 +46,8 @@ public class Professor extends Usuario{
 	}
 	
 	@Override
-	public int getQtdNotificacoes() {
-		return this.qtdNotificacoes;
+	public int getQntNotificacoes() {
+		return this.qntNotificacoes;
 	}
 	
 }
