@@ -17,6 +17,7 @@ public class SistemaBiblioteca {
 		Usuario usuario2 = new Professor("02", "Mario");
 		Usuario usuario3 = new AlunoPosGrad("03", "Vitor");
 		
+		Biblioteca.obterInstancia();
 		Biblioteca.obterInstancia().getLivros().add(livro);
 		Biblioteca.obterInstancia().getUsuarios().add(usuario);
 		Biblioteca.obterInstancia().getUsuarios().add(usuario2);

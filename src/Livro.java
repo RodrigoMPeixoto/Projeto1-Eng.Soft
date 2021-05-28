@@ -131,11 +131,12 @@ public class Livro {
 		
 		//Remover o livro de emprestimos
 		for(int i = 0; i<emprestimos.size(); i++) {
-			if(emprestimos.get(i).getDono().getCodigoUsuario() == codigoUsuario) {
+			if(emprestimos.get(i).getDono().getCodigoUsuario().equals(codigoUsuario)) {
 				Exemplar exemplar = emprestimos.get(i).getExemplar();
 				for(int j = 0; j<exemplares.size(); j++) {
 					if(exemplares.get(j) == exemplar) {
 						exemplares.get(j).setDisponivel(true);
+						exemplares.get(j).setEmprestimo(null);
 					}
 				}
 				getEmprestimos().remove(i);
@@ -167,7 +168,7 @@ public class Livro {
 	
 	public void notificarObservador() {
 		if (observadores.size() == 0) {
-			System.out.println("Não existem observadores registrados");
+			System.out.println("Nï¿½o existem observadores registrados");
 			return;
 		}
 		

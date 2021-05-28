@@ -70,8 +70,9 @@ public abstract class Usuario implements Observador{
 		
 		while(it.hasNext()) {
 			Emprestimo e = it.next();
-			if(e.getExemplar().getLivro().getCodigoLivro().equals(codigoLivro)) {
+			if(e.getExemplar().getLivro().getCodigoLivro().equals(codigoLivro)) {			
 				getEmprestimosPassados().add(e.transformarEmprestimoCorrenteEmPassado());
+				System.out.println("Livro movido para o historico do usuario");
 				it.remove();
 				return true;
 			}
@@ -127,7 +128,7 @@ public abstract class Usuario implements Observador{
 		
 		Iterator<String> it2 = getEmprestimosPassados().iterator();
 		
-		while(it.hasNext()) {
+		while(it2.hasNext()) {
 			String emprestimoPassado = it2.next();
 			System.out.println(emprestimoPassado);
 			System.out.println();
@@ -137,7 +138,7 @@ public abstract class Usuario implements Observador{
 		
 		System.out.println("# Reservas");
 		
-		while(it.hasNext()) {
+		while(it3.hasNext()) {
 			Reserva reserva = it3.next();
 			System.out.println(reserva.toString());
 			System.out.println();

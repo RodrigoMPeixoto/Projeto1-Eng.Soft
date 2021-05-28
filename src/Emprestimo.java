@@ -31,7 +31,9 @@ public class Emprestimo {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		Calendar dataDevolucaoPrevista = getDataEmprestimo();
 		dataDevolucaoPrevista.add(dataDevolucaoPrevista.DATE, dono.numeroDiasEmprestimo());
-		return formatter.format(dataDevolucaoPrevista.getTime());
+		String dataDevolucaoPrevistaEmString = formatter.format(dataDevolucaoPrevista.getTime());
+		dataDevolucaoPrevista.add(dataDevolucaoPrevista.DATE, -dono.numeroDiasEmprestimo());
+		return dataDevolucaoPrevistaEmString;
 	}
 	
 	public String transformarEmprestimoCorrenteEmPassado() {
@@ -41,10 +43,11 @@ public class Emprestimo {
 				+ "Titulo: %s\n"
 				+ "Data do Emprestimo: %s\n"
 				+ "Status do Emprestimo: Finalizado\n"
-				+ "Data da Devolução: %s\n", 
+				+ "Data da Devolução: %s", 
 				getExemplar().getLivro().getTitulo(),
 				getDataEmprestimoEmString(),
 				formatter.format(Calendar.getInstance().getTime()));
+		System.out.println(emprestimoPassado);
 		
 		return emprestimoPassado;
 	}
@@ -54,7 +57,7 @@ public class Emprestimo {
 				+ "Titulo: %s\n"
 				+ "Data do Emprestimo: %s\n"
 				+ "Status do Emprestimo: Em curso\n"
-				+ "Data da Devolução: %s\n", 
+				+ "Data da Devolução Prevista: %s", 
 				getExemplar().getLivro().getTitulo(),
 				getDataEmprestimoEmString(),
 				getDataDevolucaoPrevistaEmString());

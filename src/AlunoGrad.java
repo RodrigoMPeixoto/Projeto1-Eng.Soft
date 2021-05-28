@@ -17,7 +17,7 @@ public class AlunoGrad extends Usuario {
 			&& !limiteEmprestimosUsuarioAlcancado
 			&& !usuarioPossuiExemplar
 		) {
-			System.out.println("O usuário está apto para realizar um empréstimo");
+			System.out.println("O usuario esta apto para realizar um emprestimo");
 			return true;
 		}
 		return false;

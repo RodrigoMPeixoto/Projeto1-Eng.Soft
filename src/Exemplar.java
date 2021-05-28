@@ -20,7 +20,7 @@ public class Exemplar {
 		
 		consulta += String.format("Codigo do exemplar: %s \nStatus do exemplar: %b \n", getCodigoExemplar(), isDisponivel());
 		if(isDisponivel() == false) {
-			consulta += String.format("Usuario: %s \nData do Emprestimo: %s \n Data de devolução: %s \n ", getEmprestimo().getDono().getNomeUsuario(), getEmprestimo().getDataEmprestimo(), getEmprestimo().getDataDevolucaoPrevistaEmString());
+			consulta += String.format("Usuario: %s \nData do Emprestimo: %s\nData de DevoluÃ§Ã£o: %s \n", getEmprestimo().getDono().getNomeUsuario(), getEmprestimo().getDataEmprestimoEmString(), getEmprestimo().getDataDevolucaoPrevistaEmString());
 		}
 		return consulta;
 	}

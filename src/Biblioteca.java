@@ -25,7 +25,6 @@ public class Biblioteca {
 	public Usuario buscarUsuario(String codigoUsuario) {
 		for(int i = 0; i<usuarios.size(); i++) {
 			if(usuarios.get(i).getCodigoUsuario().equals(codigoUsuario)) {
-				System.out.println(usuarios.get(i).getCodigoUsuario());
 				return usuarios.get(i);
 			}
 		}
@@ -35,7 +34,7 @@ public class Biblioteca {
 	
 	public Livro buscarLivro(String codigoLivro) {
 		for(int i = 0; i<livros.size(); i++) {
-			if(livros.get(i).getCodigoLivro() == codigoLivro) {
+			if(livros.get(i).getCodigoLivro().equals(codigoLivro)) {
 				return livros.get(i);
 			}
 		}
@@ -52,10 +51,10 @@ public class Biblioteca {
 			System.out.println("Usuario nÃ£o encontrado");
 			return;
 		}else {
-			boolean usuarioPendente = usuario.verificarRestricoesEmprestimo(codigoLivro);
+			boolean usuarioLiberado = usuario.verificarRestricoesEmprestimo(codigoLivro);
 			prioridade = usuario.verificarPrioridade();
-			if(usuarioPendente == true) {
-				System.out.println("Usuario possui pendências");
+			if(!usuarioLiberado) {
+				System.out.println("Usuario possui pendÃªncias");
 				return;
 			}
 		}	
@@ -63,12 +62,12 @@ public class Biblioteca {
 		//Verificar o livro
 		Livro livro = buscarLivro(codigoLivro);
 		if(livro == null) { // Verifica se o livro existe
-			System.out.println("Livro não encontrado");
+			System.out.println("Livro nï¿½o encontrado");
 			return;
 		}else {
 			Exemplar exemplar = livro.verificarDisponibilidade(codigoUsuario, prioridade);
 			if(exemplar == null) {
-				System.out.println("Não existem livros disponíves no momento");
+				System.out.println("Nï¿½o existem livros disponï¿½ves no momento");
 				return;
 			}else {
 				Emprestimo emprestimo = new Emprestimo(usuario, exemplar);
@@ -130,13 +129,13 @@ public class Biblioteca {
 	
 	public void consultarUsuario(String codigoUsuario) {
 		Usuario usuario = buscarUsuario(codigoUsuario);
-		System.out.println(usuario.toString());
+		usuario.consultaUsuario();
 		return;
 	}
 	
 	public void consultarQntNotificacoes(String codigoUsuario) {
 		Usuario usuario = buscarUsuario(codigoUsuario);
-		System.out.printf("O usuario recebeu %d.", usuario.getQtdNotificacoes());
+		System.out.printf("O usuario recebeu %d notificacoes.", usuario.getQtdNotificacoes());
 		return;
 	}
 	
