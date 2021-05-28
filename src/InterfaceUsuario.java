@@ -17,7 +17,7 @@ public class InterfaceUsuario {
 	public String obterComandoConsole() throws IOException{
 		BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
 		
-		System.out.println("\nOlá, digite um comando:");
+		System.out.println("\nOi, digite um comando:");
 		return teclado.readLine();
 	}
 	
@@ -29,7 +29,7 @@ public class InterfaceUsuario {
 	public void fazerLoopEntrada() throws IOException {
 		
 		String stringComando = obterComandoConsole();
-		while(!stringComando.split(" ")[0].equals("sair")) {
+		while(!stringComando.split(" ")[0].equals("sai")) {
 			executarComando(stringComando);
 			stringComando = obterComandoConsole();
 		}

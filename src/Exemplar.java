@@ -18,26 +18,12 @@ public class Exemplar {
 	public String toString() {
 		String consulta = "";
 		
-		consulta += String.format("Codigo do exemplar: %s \nStatus do exemplar: %b \n", getCodigoExemplar(), isDisponivel());
+		consulta += String.format("Codigo do exemplar: %s \nStatus do exemplar: %s \n", getCodigoExemplar(), isDisponivel()? "Disponivel": "Emprestado");
 		if(isDisponivel() == false) {
-			consulta += String.format("Usuario: %s \nData do Emprestimo: %s\nData de Devolução: %s \n", getEmprestimo().getDono().getNomeUsuario(), getEmprestimo().getDataEmprestimoEmString(), getEmprestimo().getDataDevolucaoPrevistaEmString());
+			consulta += String.format("Usuario: %s \nData do Emprestimo: %s\nData de Devolucao: %s \n", getEmprestimo().getDono().getNomeUsuario(), getEmprestimo().getDataEmprestimoEmString(), getEmprestimo().getDataDevolucaoPrevistaEmString());
 		}
 		return consulta;
 	}
-	
-	/*
-	public boolean pegarEmprestado(Usuario usuario) {
-		//Codar...
-	}
-	
-	public Exemplar obterExemplar() { // Talvez quem deva retornar o exemplar é o livro e não essa classe aqui
-		//Codar...
-	}
-	
-	public boolean devolverLivro() {
-		//Codar...
-	}
-	*/
 	
 	//Getter e Setters
 	public Livro getLivro() {

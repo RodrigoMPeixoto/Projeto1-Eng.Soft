@@ -45,16 +45,16 @@ public class Biblioteca {
 	public void pegarEmprestado(String codigoUsuario, String codigoLivro) {
 		boolean prioridade;
 		
-		//Busca na lista de usuario e verificar se ele cumpre as restrições
+		//Busca na lista de usuario e verificar se ele cumpre as restricoes
 		Usuario usuario = buscarUsuario(codigoUsuario);
 		if(usuario == null) { // Verifica se o usuario existe
-			System.out.println("Usuario não encontrado");
+			System.out.println("Usuario nao encontrado");
 			return;
 		}else {
 			boolean usuarioLiberado = usuario.verificarRestricoesEmprestimo(codigoLivro);
 			prioridade = usuario.verificarPrioridade();
 			if(!usuarioLiberado) {
-				System.out.println("Usuario possui pendências");
+				System.out.println("Nao foi possivel realizar o emprestimo");
 				return;
 			}
 		}	
@@ -62,27 +62,24 @@ public class Biblioteca {
 		//Verificar o livro
 		Livro livro = buscarLivro(codigoLivro);
 		if(livro == null) { // Verifica se o livro existe
-			System.out.println("Livro n�o encontrado");
+			System.out.println("Livro nao encontrado");
 			return;
 		}else {
 			Exemplar exemplar = livro.verificarDisponibilidade(codigoUsuario, prioridade);
 			if(exemplar == null) {
-				System.out.println("N�o existem livros dispon�ves no momento");
+				System.out.println("Nao existem livros disponives no momento");
 				return;
 			}else {
 				Emprestimo emprestimo = new Emprestimo(usuario, exemplar);
 				livro.getEmprestimos().add(emprestimo);
 				usuario.getEmprestimosCorrentes().add(emprestimo);
 				livro.pegarEmprestado(exemplar, emprestimo);
-				livro.removerReserva(codigoUsuario); // Verificar possibilidade de remover a reserva dentro do metodo pegar emprestado
-				usuario.removerReserva(codigoLivro); //Possibilidade de melhorar essa remoção de reserva
+				livro.removerReserva(codigoUsuario);
+				usuario.removerReserva(codigoLivro);
 			}
 		}
 		
-		
-		//Deve ser retornada uma mensagem de sucesso ou insucesso
-		System.out.println("Emprestimo realizado com sucesso");
-		
+		System.out.printf("O livro %s foi emprestado para %s com sucesso\n", livro.getTitulo(),usuario.getNomeUsuario());
 	}
 	
 	public void devolverLivro(String codigoUsuario, String codigoLivro) {
@@ -97,13 +94,13 @@ public class Biblioteca {
 		Livro livro = buscarLivro(codigoLivro);
 		Usuario usuario = buscarUsuario(codigoUsuario);
 		if(usuario.verificarRestricoesReserva(codigoLivro)) {
-			//Utilizar a biblioteca de tempo aqui
-			//String dataEmprestimo =
-			livro.adicionarReserva(livro,usuario);
+			Reserva reserva = new Reserva(livro, usuario);
+			livro.adicionarReserva(reserva);
+			usuario.getReservas().add(reserva);
 			System.out.println("Reserva realizada com sucesso");
 			return; 
 		}
-		System.out.println("Não foi possível realizar a reserva para esse usuário");
+		System.out.println("Nao foi possivel realizar a reserva para esse usuario");
 		return;
 	}
 	
@@ -129,13 +126,13 @@ public class Biblioteca {
 	
 	public void consultarUsuario(String codigoUsuario) {
 		Usuario usuario = buscarUsuario(codigoUsuario);
-		usuario.consultaUsuario();
+		usuario.consultarUsuario();
 		return;
 	}
 	
 	public void consultarQntNotificacoes(String codigoUsuario) {
 		Usuario usuario = buscarUsuario(codigoUsuario);
-		System.out.printf("O usuario recebeu %d notificacoes.", usuario.getQtdNotificacoes());
+		System.out.printf("O usuario recebeu %d notificacoes.", usuario.getQntNotificacoes());
 		return;
 	}
 	

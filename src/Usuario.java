@@ -1,4 +1,6 @@
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 public abstract class Usuario implements Observador{
@@ -38,6 +40,27 @@ public abstract class Usuario implements Observador{
 
 	public abstract boolean verificarRestricoesEmprestimo(String codigoLivro);
 	
+	public boolean usuarioPossuiExemplar(String codigoLivro) {
+		for(int i=0; i<getEmprestimosCorrentes().size(); i++) {
+			Emprestimo e = getEmprestimosCorrentes().get(i);
+			if(e.getExemplar().getLivro().getCodigoLivro().equals(codigoLivro)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isUsuarioDevedor() {
+		for(int i=0; i<getEmprestimosCorrentes().size(); i++) {
+			Emprestimo e = getEmprestimosCorrentes().get(i);
+			long diasEntreHojeEmprestimo = ChronoUnit.DAYS.between(Calendar.getInstance().toInstant(),e.getDataEmprestimo().toInstant());
+			if(diasEntreHojeEmprestimo > numeroDiasEmprestimo()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public abstract boolean verificarPrioridade();
 	
 	public boolean removerReserva(String codigoLivro) {
@@ -47,18 +70,6 @@ public abstract class Usuario implements Observador{
 			Reserva r = it.next();
 			if(r.getLivro().getCodigoLivro().equals(codigoLivro)) {
 				it.remove();
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean verificarEmprestimoCorrenteLivro(String codigoLivro) {
-		Iterator<Emprestimo> it = getEmprestimosCorrentes().iterator();
-		
-		while(it.hasNext()) {
-			Emprestimo e = it.next();
-			if(e.getExemplar().getLivro().getCodigoLivro().equals(codigoLivro)) {
 				return true;
 			}
 		}
@@ -84,17 +95,31 @@ public abstract class Usuario implements Observador{
 	
 	public boolean verificarRestricoesReserva(String codigoLivro) {
 		boolean limiteReservasAtingido = limiteReservasAtingido();
-		boolean existeReservaUsuario = existeReservaUsuario(codigoLivro);
+		boolean existeReservaUsuario = usuarioPossuiReserva(codigoLivro);
+		boolean existeEmprestimo = usuarioPossuiExemplar(codigoLivro);
+		
 		
 		if(!limiteReservasAtingido &&
-			!existeReservaUsuario) {
+			!existeReservaUsuario && !existeEmprestimo) {
 			return true;
+		}
+		
+		if(limiteReservasAtingido) {
+			System.out.println("O usuario atingiu o limite de reservas");
+		}
+		
+		if(existeReservaUsuario) {
+			System.out.println("O usuario ja possui uma reserva deste livro");
+		}
+		
+		if(existeEmprestimo) {
+			System.out.println("O usuario ja possui um exemplar deste livro emprestado");
 		}
 		
 		return false;
 	}
 
-	private boolean existeReservaUsuario(String codigoLivro) {
+	private boolean usuarioPossuiReserva(String codigoLivro) {
 		Iterator<Reserva> it = getReservas().iterator();
 		
 		while(it.hasNext()) {
@@ -113,7 +138,7 @@ public abstract class Usuario implements Observador{
 		return false;
 	}
 	
-	public void consultaUsuario() {
+	public void consultarUsuario() {
 		Iterator<Emprestimo> it = getEmprestimosCorrentes().iterator();
 		
 		System.out.println("# Emprestimos Correntes");
@@ -145,5 +170,5 @@ public abstract class Usuario implements Observador{
 		}
 	}
 	
-	public abstract int getQtdNotificacoes();
+	public abstract int getQntNotificacoes();
 }

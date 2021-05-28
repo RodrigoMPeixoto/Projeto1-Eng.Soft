@@ -1,9 +1,0 @@
-100;01;Disponivel
-100;02;Disponivel
-101;03;Disponivel
-200;04;Disponivel
-201;05;Disponivel
-300;06;Disponivel
-300;07;Disponivel
-400;08;Disponivel
-400;09;Disponivel

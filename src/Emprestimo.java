@@ -43,11 +43,11 @@ public class Emprestimo {
 				+ "Titulo: %s\n"
 				+ "Data do Emprestimo: %s\n"
 				+ "Status do Emprestimo: Finalizado\n"
-				+ "Data da Devolução: %s", 
+				+ "Data da Devolucao: %s", 
 				getExemplar().getLivro().getTitulo(),
 				getDataEmprestimoEmString(),
 				formatter.format(Calendar.getInstance().getTime()));
-		System.out.println(emprestimoPassado);
+		System.out.printf("Data da Devolucao: %s\n" ,formatter.format(Calendar.getInstance().getTime()));
 		
 		return emprestimoPassado;
 	}
@@ -57,7 +57,7 @@ public class Emprestimo {
 				+ "Titulo: %s\n"
 				+ "Data do Emprestimo: %s\n"
 				+ "Status do Emprestimo: Em curso\n"
-				+ "Data da Devolução Prevista: %s", 
+				+ "Data da Devolucao Prevista: %s", 
 				getExemplar().getLivro().getTitulo(),
 				getDataEmprestimoEmString(),
 				getDataDevolucaoPrevistaEmString());

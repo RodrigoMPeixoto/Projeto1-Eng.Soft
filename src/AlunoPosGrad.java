@@ -17,36 +17,28 @@ public class AlunoPosGrad extends Usuario {
 			&& !limiteEmprestimosUsuarioAlcancado
 			&& !usuarioPossuiExemplar
 		) {
-			System.out.println("O usuário está apto para realizar um empréstimo");
+			System.out.println("O usuario esta apto para realizar um emprestimo");
 			return true;
 		}
-		return false;
-	}
-	
-	private boolean usuarioPossuiExemplar(String codigoLivro) {
-		for(int i=0; i<getEmprestimosCorrentes().size(); i++) {
-			Emprestimo e = getEmprestimosCorrentes().get(i);
-			if(e.getExemplar().getLivro().getCodigoLivro().equals(codigoLivro)) {
-				return true;
-			}
+		
+		if(usuarioDevedor) {
+			System.out.println("O est� devedor de um livro");
 		}
+		
+		if(limiteEmprestimosUsuarioAlcancado) {
+			System.out.println("O usuario atingiu o limite de emprestimos");
+		}
+		
+		if(usuarioPossuiExemplar) {
+			System.out.println("O usuario ja posui um exemplar deste livro");
+		}
+		
 		return false;
 	}
 
 	private boolean limiteEmprestimosUsuarioAlcancado() {
 		if(getEmprestimosCorrentes().size() == 4) {
 			return true;
-		}
-		return false;
-	}
-
-	private boolean isUsuarioDevedor() {
-		for(int i=0; i<getEmprestimosCorrentes().size(); i++) {
-			Emprestimo e = getEmprestimosCorrentes().get(i);
-			long diasEntreHojeEmprestimo = ChronoUnit.DAYS.between(Calendar.getInstance().toInstant(),e.getDataEmprestimo().toInstant());
-			if(diasEntreHojeEmprestimo > 4) {
-				return true;
-			}
 		}
 		return false;
 	}
@@ -62,7 +54,7 @@ public class AlunoPosGrad extends Usuario {
 	}
 	
 	@Override
-	public int getQtdNotificacoes() {
+	public int getQntNotificacoes() {
 		return 0;
 	}
 
