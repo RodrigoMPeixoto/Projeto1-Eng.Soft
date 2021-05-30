@@ -22,8 +22,12 @@ public class InterfaceUsuario {
 	}
 	
 	public void executarComando(String stringComando) {
-		Comando comando = getComandos().get(stringComando.split(" ")[0]);
-		comando.executar(stringComando);
+		try {
+			Comando comando = getComandos().get(stringComando.split(" ")[0]);
+			comando.executar(stringComando);
+		} catch (Exception e) {
+			System.out.printf("Error: " + e + "\nTente novamente.");
+		}
 	}
 	
 	public void fazerLoopEntrada() throws IOException {
